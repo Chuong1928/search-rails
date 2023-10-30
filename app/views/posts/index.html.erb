@@ -1,0 +1,29 @@
+<p style="color: green"><%= notice %></p>
+<%= form_tag(posts_path, method: :get, id: 'search-form') do |f| %>
+  <div class="form-group">
+    <%= label_tag "Trạng thái:" %>
+    <% Post.post_types.keys.each do |status| %>
+      <%= check_box_tag "post_type[]", status, params[:post_type]&.include?(status) %>
+      <%= label_tag "status_#{status}", status %>
+    <% end %>
+    <%= label_tag :title_cont, "Tìm theo tiêu đề:" %>
+    <%= text_field_tag :"q[title_cont]", params[:q][:title_cont] %>
+  </div>
+  <button type="submit">Search</button>
+<% end %>
+<h1>Posts</h1>
+
+<div style="display:flex; justify-content: space-between;">
+  <ul id="posts-list">
+    <%= render partial: 'count_post'%>
+  </ul>
+  <div id="posts">
+    <% @posts.each do |post| %>
+      <%= render post %>
+      <p>
+        <%= link_to "Show this post", post %>
+      </p>
+    <% end %>
+  </div>
+</div>
+<%= link_to "New post", new_post_path %>
